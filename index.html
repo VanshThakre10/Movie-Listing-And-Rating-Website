@@ -148,6 +148,35 @@
         </section>
     </main>
 
+    <!-- Rating Modal (Step 6) -->
+    <div class="rating-modal-overlay" id="ratingModalOverlay">
+        <div class="rating-modal position-relative">
+            <button class="rating-modal-close" id="closeRatingModal"><i class="fas fa-times"></i></button>
+            <h3 class="font-bold text-xl mb-1 mt-2">Rate Movie</h3>
+            <p id="ratingMovieTitle" class="text-gray-400 text-sm mb-4">Movie Title</p>
+            
+            <div class="rating-stars-container" id="starRatingContainer">
+                <i class="fas fa-star rating-star" data-value="1"></i>
+                <i class="fas fa-star rating-star" data-value="2"></i>
+                <i class="fas fa-star rating-star" data-value="3"></i>
+                <i class="fas fa-star rating-star" data-value="4"></i>
+                <i class="fas fa-star rating-star" data-value="5"></i>
+            </div>
+            
+            <p class="text-sm font-medium mt-3"><span id="ratingValueDisplay" class="text-accentGold text-xl mr-1">0</span>/ 5</p>
+            <button id="submitRatingBtn" class="btn btn-primary-red w-full mt-4 py-2" disabled>Submit Rating</button>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="toast-notification d-flex align-items-center gap-3">
+        <i class="fas fa-check-circle text-success text-xl"></i>
+        <div>
+            <h6 class="mb-0 font-bold text-sm">Success</h6>
+            <p id="toastMessage" class="mb-0 text-xs text-gray-400">Rating submitted successfully.</p>
+        </div>
+    </div>
+
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->

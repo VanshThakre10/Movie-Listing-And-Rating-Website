@@ -175,3 +175,98 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
 }
+
+/* --- Step 6: Rating Modal Styles --- */
+.rating-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 3000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition-smooth);
+}
+
+.rating-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.rating-modal {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    transform: scale(0.9);
+    transition: var(--transition-smooth);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.rating-modal-overlay.active .rating-modal {
+    transform: scale(1);
+}
+
+.rating-stars-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.rating-star {
+    font-size: 2rem;
+    color: #444;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rating-star.hover,
+.rating-star.active {
+    color: var(--accent-gold);
+    transform: scale(1.1);
+}
+
+.rating-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--text-gray);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.rating-modal-close:hover {
+    color: var(--text-white);
+}
+
+/* Toast Notification */
+.toast-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--bg-card);
+    border-left: 4px solid var(--primary-red);
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 4000;
+    transform: translateX(120%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toast-notification.show {
+    transform: translateX(0);
+}

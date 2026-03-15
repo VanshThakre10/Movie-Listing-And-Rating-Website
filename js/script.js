@@ -180,9 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="fas fa-star"></i> ${movie.rating}
                         </div>
                         <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
-                        <div class="card-overlay">
+                        <div class="card-overlay d-flex flex-column gap-2 justify-content-center p-3">
                             <button class="btn btn-primary-red btn-sm w-full py-2 font-bold detail-btn">
                                 VIEW DETAILS
+                            </button>
+                            <button class="btn btn-glass btn-sm w-full py-2 font-bold rate-btn" data-id="${movie.id}" data-title="${movie.title}">
+                                <i class="fas fa-star mr-1"></i> RATE
                             </button>
                         </div>
                     </div>
@@ -201,4 +204,107 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial Render
     renderMovies(movies);
+
+    // --- Step 6: Interactive Star Rating System Logic ---
+    const ratingModalOverlay = document.getElementById('ratingModalOverlay');
+    const closeRatingModal = document.getElementById('closeRatingModal');
+    const ratingMovieTitle = document.getElementById('ratingMovieTitle');
+    const stars = document.querySelectorAll('.rating-star');
+    const ratingValueDisplay = document.getElementById('ratingValueDisplay');
+    const submitRatingBtn = document.getElementById('submitRatingBtn');
+    const toastNotification = document.getElementById('toastNotification');
+    const toastMessage = document.getElementById('toastMessage');
+    
+    let currentRating = 0;
+    let selectedMovieId = null;
+
+    // Open Modal
+    document.addEventListener('click', (e) => {
+        const rateBtn = e.target.closest('.rate-btn');
+        if (rateBtn) {
+            selectedMovieId = rateBtn.dataset.id;
+            ratingMovieTitle.textContent = rateBtn.dataset.title;
+            ratingModalOverlay.classList.add('active');
+            resetStars();
+        }
+    });
+
+    // Close Modal
+    closeRatingModal.addEventListener('click', () => {
+        ratingModalOverlay.classList.remove('active');
+    });
+
+    // Close on outside click
+    ratingModalOverlay.addEventListener('click', (e) => {
+        if (e.target === ratingModalOverlay) {
+            ratingModalOverlay.classList.remove('active');
+        }
+    });
+
+    // Star Hover and Click Logic
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            currentRating = parseInt(star.dataset.value);
+            updateStarClasses('active', currentRating);
+            ratingValueDisplay.textContent = currentRating;
+            submitRatingBtn.disabled = false;
+        });
+
+        star.addEventListener('mouseenter', () => {
+            updateStarClasses('hover', parseInt(star.dataset.value));
+            ratingValueDisplay.textContent = star.dataset.value;
+        });
+
+        star.addEventListener('mouseleave', () => {
+            stars.forEach(s => s.classList.remove('hover'));
+            ratingValueDisplay.textContent = currentRating;
+        });
+    });
+
+    function updateStarClasses(className, rating) {
+        stars.forEach(s => {
+            if (parseInt(s.dataset.value) <= rating) {
+                s.classList.add(className);
+            } else {
+                s.classList.remove(className);
+            }
+        });
+    }
+
+    function resetStars() {
+        currentRating = 0;
+        stars.forEach(s => {
+            s.classList.remove('active');
+            s.classList.remove('hover');
+        });
+        ratingValueDisplay.textContent = '0';
+        submitRatingBtn.disabled = true;
+    }
+
+    // Submit Rating
+    submitRatingBtn.addEventListener('click', () => {
+        if (currentRating > 0 && selectedMovieId) {
+            const movie = movies.find(m => m.id == selectedMovieId);
+            if (movie) {
+                // simple math to update average
+                const oldRating = parseFloat(movie.rating);
+                movie.rating = ((oldRating + parseInt(currentRating)) / 2).toFixed(1);
+                
+                // Re-render movies to show new rating
+                renderMovies(movies);
+                
+                // Close modal and show toast
+                ratingModalOverlay.classList.remove('active');
+                showToast(`You rated ${movie.title} ${currentRating} stars!`);
+            }
+        }
+    });
+
+    function showToast(message) {
+        toastMessage.textContent = message;
+        toastNotification.classList.add('show');
+        setTimeout(() => {
+            toastNotification.classList.remove('show');
+        }, 3000);
+    }
 });
