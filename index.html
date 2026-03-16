@@ -168,6 +168,50 @@
         </div>
     </div>
     
+    <!-- Details Modal (Step 7) -->
+    <div class="details-modal-overlay" id="detailsModalOverlay">
+        <div class="details-modal">
+            <button class="details-modal-close" id="closeDetailsModal"><i class="fas fa-times"></i></button>
+            <div class="row g-0 h-100">
+                <div class="col-md-4 d-none d-md-block h-100">
+                    <img id="detailPoster" src="" alt="Movie Poster" class="details-poster">
+                </div>
+                <div class="col-md-8 h-100 d-flex flex-column">
+                    <div class="details-content flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h2 id="detailTitle" class="font-bold text-3xl mb-0"></h2>
+                            <span id="detailRating" class="badge bg-primary-red text-lg align-self-center"><i class="fas fa-star text-accentGold mr-1"></i> <span class="rating-val"></span></span>
+                        </div>
+                        <div class="d-flex gap-3 text-sm text-gray-400 mb-4 font-medium">
+                            <span id="detailYear"></span>
+                            <span>&bull;</span>
+                            <span id="detailGenre"></span>
+                        </div>
+                        <p id="detailDescription" class="text-gray-300 mb-4 line-clamp-3 leading-relaxed"></p>
+                        
+                        <div class="row mb-4">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <h6 class="text-gray-500 font-bold text-xs uppercase mb-1 tracking-wider">Director</h6>
+                                <p id="detailDirector" class="text-white text-sm font-medium m-0"></p>
+                            </div>
+                            <div class="col-sm-6">
+                                <h6 class="text-gray-500 font-bold text-xs uppercase mb-1 tracking-wider">Cast</h6>
+                                <p id="detailCast" class="text-white text-sm font-medium m-0"></p>
+                            </div>
+                        </div>
+
+                        <div class="trailer-container mt-auto pt-2">
+                            <h6 class="text-gray-500 font-bold text-xs uppercase mb-2 tracking-wider">Trailer</h6>
+                            <div class="ratio ratio-16x9">
+                                <iframe id="detailTrailer" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toastNotification" class="toast-notification d-flex align-items-center gap-3">
         <i class="fas fa-check-circle text-success text-xl"></i>
