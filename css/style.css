@@ -270,3 +270,172 @@ body {
 .toast-notification.show {
     transform: translateX(0);
 }
+
+/* --- Step 7: Details Modal Styles --- */
+.details-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    z-index: 3000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition-smooth);
+}
+
+.details-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.details-modal {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    width: 90%;
+    height: 85vh;
+    max-width: 1000px;
+    position: relative;
+    overflow: hidden;
+    transform: translateY(30px);
+    transition: var(--transition-smooth);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+}
+
+.details-modal-overlay.active .details-modal {
+    transform: translateY(0);
+}
+
+.details-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.details-content {
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.details-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    color: var(--text-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.details-modal-close:hover {
+    background: var(--primary-red);
+    transform: rotate(90deg);
+}
+
+/* --- Step 10: Premium UI Animations --- */
+.movie-card {
+    background: #1a1a1c;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.movie-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(229, 9, 20, 0.2);
+}
+
+.poster-container {
+    position: relative;
+    padding-top: 150%;
+    overflow: hidden;
+}
+
+.movie-poster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.movie-card:hover .movie-poster {
+    transform: scale(1.08);
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.movie-card:hover .card-overlay {
+    opacity: 1;
+}
+
+.rating-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.7);
+    color: var(--accent-gold);
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    z-index: 2;
+    backdrop-filter: blur(4px);
+}
+
+.movie-info {
+    padding: 15px;
+}
+
+.movie-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-gray);
+    font-size: 0.85rem;
+}
+
+.genre-tag {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+}

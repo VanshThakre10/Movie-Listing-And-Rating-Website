@@ -170,14 +170,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderMovies(movieList) {
         movieGrid.innerHTML = '';
 
-        movieList.forEach(movie => {
+        movieList.forEach((movie, index) => {
             const card = document.createElement('div');
             card.className = 'col-6 col-md-4 col-lg-3';
+            // Added animation delay for Step 10
+            card.style.animationDelay = `${index * 0.05}s`;
             card.innerHTML = `
                 <div class="movie-card" data-id="${movie.id}">
                     <div class="poster-container">
                         <div class="rating-badge">
-                            <i class="fas fa-star"></i> ${movie.rating}
+                            <i class="fas fa-star"></i> ${parseFloat(movie.rating).toFixed(1)}
                         </div>
                         <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
                         <div class="card-overlay d-flex flex-column gap-2 justify-content-center p-3">
@@ -291,7 +293,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 movie.rating = ((oldRating + parseInt(currentRating)) / 2).toFixed(1);
                 
                 // Re-render movies to show new rating
-                renderMovies(movies);
+                // Preserve current filters if any
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                const filterBtnText = document.querySelector('.dropdown-toggle span').textContent;
+                
+                let filteredMovies = [...movies];
+                if (filterBtnText !== 'Filter' && filterBtnText !== 'Genre' && filterBtnText !== 'Year') {
+                    if (filterBtnText === 'Newest') {
+                        filteredMovies.sort((a, b) => b.year - a.year);
+                    } else if (filterBtnText === 'Classic') {
+                        filteredMovies.sort((a, b) => a.year - b.year);
+                    } else {
+                        filteredMovies = filteredMovies.filter(m => m.genre === filterBtnText);
+                    }
+                }
+                
+                if (searchTerm) {
+                    filteredMovies = filteredMovies.filter(m => m.title.toLowerCase().includes(searchTerm));
+                }
+
+                renderMovies(filteredMovies);
                 
                 // Close modal and show toast
                 ratingModalOverlay.classList.remove('active');
@@ -307,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
             toastNotification.classList.remove('show');
         }, 3000);
     }
+
     // --- Step 7: Movie Details Modal with Trailer Integration ---
     const detailsModalOverlay = document.getElementById('detailsModalOverlay');
     const closeDetailsModal = document.getElementById('closeDetailsModal');
@@ -331,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (movie) {
                 detailPoster.src = movie.poster;
                 detailTitle.textContent = movie.title;
-                detailRating.textContent = movie.rating;
+                detailRating.textContent = parseFloat(movie.rating).toFixed(1);
                 detailYear.textContent = movie.year;
                 detailGenre.textContent = movie.genre;
                 detailDescription.textContent = movie.description;
@@ -361,10 +383,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
 
     searchInput.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase().trim();
-        const filteredMovies = movies.filter(movie => 
-            movie.title.toLowerCase().includes(searchTerm)
-        );
-        renderMovies(filteredMovies);
+        applyFilters();
     });
+
+    // --- Step 9: Multi-Criteria Filtering System ---
+    const filterItems = document.querySelectorAll('.dropdown-item');
+    const filterBtnText = document.querySelector('.dropdown-toggle span');
+
+    filterItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const filterValue = e.target.textContent;
+            filterBtnText.textContent = filterValue;
+            applyFilters();
+        });
+    });
+
+    function applyFilters() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const filterValue = filterBtnText.textContent;
+        
+        let filteredMovies = [...movies];
+        
+        // Apply Dropdown Filter
+        if (filterValue !== 'Filter' && filterValue !== 'Genre' && filterValue !== 'Year') {
+            if (filterValue === 'Action' || filterValue === 'Drama' || filterValue === 'Sci-Fi') {
+                filteredMovies = filteredMovies.filter(m => m.genre === filterValue);
+            } else if (filterValue === 'Newest') {
+                filteredMovies.sort((a, b) => b.year - a.year);
+            } else if (filterValue === 'Classic') {
+                filteredMovies.sort((a, b) => a.year - b.year);
+            }
+        }
+        
+        // Apply Search Term
+        if (searchTerm) {
+            filteredMovies = filteredMovies.filter(movie => 
+                movie.title.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        renderMovies(filteredMovies);
+    }
 });
