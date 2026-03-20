@@ -307,4 +307,64 @@ document.addEventListener('DOMContentLoaded', () => {
             toastNotification.classList.remove('show');
         }, 3000);
     }
+    // --- Step 7: Movie Details Modal with Trailer Integration ---
+    const detailsModalOverlay = document.getElementById('detailsModalOverlay');
+    const closeDetailsModal = document.getElementById('closeDetailsModal');
+    const detailPoster = document.getElementById('detailPoster');
+    const detailTitle = document.getElementById('detailTitle');
+    const detailRating = document.getElementById('detailRating').querySelector('.rating-val');
+    const detailYear = document.getElementById('detailYear');
+    const detailGenre = document.getElementById('detailGenre');
+    const detailDescription = document.getElementById('detailDescription');
+    const detailDirector = document.getElementById('detailDirector');
+    const detailCast = document.getElementById('detailCast');
+    const detailTrailer = document.getElementById('detailTrailer');
+
+    // Open Details Modal
+    movieGrid.addEventListener('click', (e) => {
+        const detailBtn = e.target.closest('.detail-btn');
+        if (detailBtn) {
+            const movieCard = detailBtn.closest('.movie-card');
+            const movieId = movieCard.dataset.id;
+            const movie = movies.find(m => m.id == movieId);
+
+            if (movie) {
+                detailPoster.src = movie.poster;
+                detailTitle.textContent = movie.title;
+                detailRating.textContent = movie.rating;
+                detailYear.textContent = movie.year;
+                detailGenre.textContent = movie.genre;
+                detailDescription.textContent = movie.description;
+                detailDirector.textContent = movie.director;
+                detailCast.textContent = movie.cast.join(', ');
+                detailTrailer.src = movie.trailer;
+
+                detailsModalOverlay.classList.add('active');
+            }
+        }
+    });
+
+    // Close Details Modal
+    closeDetailsModal.addEventListener('click', () => {
+        detailsModalOverlay.classList.remove('active');
+        detailTrailer.src = ''; // Stop video playback
+    });
+
+    detailsModalOverlay.addEventListener('click', (e) => {
+        if (e.target === detailsModalOverlay) {
+            detailsModalOverlay.classList.remove('active');
+            detailTrailer.src = ''; // Stop video playback
+        }
+    });
+
+    // --- Step 8: Real-time Search Functionality ---
+    const searchInput = document.getElementById('searchInput');
+
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase().trim();
+        const filteredMovies = movies.filter(movie => 
+            movie.title.toLowerCase().includes(searchTerm)
+        );
+        renderMovies(filteredMovies);
+    });
 });
